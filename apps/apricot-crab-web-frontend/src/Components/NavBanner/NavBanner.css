@@ -1,0 +1,55 @@
+.banner {
+  display: flex;
+  align-items: center;
+  padding: 0.85rem 2.25rem;
+  background-color: var(--apricot-orange);
+  width: 100%;
+  position: sticky;
+  top: 0;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+.brand {
+  font-family: 'Comfortaa', cursive;
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--font-white);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  padding: 0.35rem 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  transform-origin: center center;
+  transition: transform 0.2s ease;
+}
+
+.brand.active {
+  transform: scale(1.15); /* active page shown larger, like on hover */
+}
+
+.brand:hover {
+  transform: scale(1.15);
+}
+
+.divider {
+  width: 1px;
+  align-self: stretch;
+  background-color: var(--font-white);
+  margin: 0 0.5rem;
+}
+
+.logo {
+  width: 1.8rem;
+  height: auto;
+  animation: spin 4s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
