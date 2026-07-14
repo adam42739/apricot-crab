@@ -2,7 +2,7 @@
   display: flex;
   align-items: center;
   padding: 0.85rem 2.25rem;
-  background-color: var(--apricot-orange);
+  background-color: var(--main-accent);
   width: 100%;
   position: sticky;
   top: 0;
@@ -10,10 +10,10 @@
 }
 
 .brand {
-  font-family: 'Comfortaa', cursive;
+  font-family: var(--font-brand);
   font-size: 1.6rem;
   font-weight: 400;
-  color: var(--font-white);
+  color: var(--main-font);
   text-decoration: none;
   letter-spacing: 0.01em;
   padding: 0.35rem 1.1rem;
@@ -35,21 +35,53 @@
 .divider {
   width: 1px;
   align-self: stretch;
-  background-color: var(--font-white);
+  background-color: var(--main-font);
   margin: 0 0.5rem;
 }
 
 .logo {
-  width: 1.8rem;
-  height: auto;
-  animation: spin 4s linear infinite;
+  position: relative;
+  display: inline-block;
+  width: 2.25rem;
+  height: 2.25rem;
+  /* Scale the crab up visually without enlarging its layout box, so the
+     nav bar doesn't get taller the way a bigger font size would. */
+  transform: scale(1.25);
+  transform-origin: center;
 }
 
-@keyframes spin {
-  from {
-    transform: rotate(0deg);
+.logo img {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+/* Right crab is shown for 0.5s, left crab for 1.5s, over a 2s cycle. */
+.logo-right {
+  animation: crab-right 2s steps(1) infinite;
+}
+
+.logo-left {
+  animation: crab-left 2s steps(1) infinite;
+}
+
+@keyframes crab-right {
+  0% {
+    opacity: 1;
   }
-  to {
-    transform: rotate(360deg);
+  25% {
+    opacity: 0;
+  }
+}
+
+@keyframes crab-left {
+  0% {
+    opacity: 0;
+  }
+  25% {
+    opacity: 1;
   }
 }

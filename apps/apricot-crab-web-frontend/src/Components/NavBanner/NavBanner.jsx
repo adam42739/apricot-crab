@@ -6,7 +6,10 @@ function NavBanner() {
   return (
     <nav className="banner">
       <a className={`brand${path === '/' ? ' active' : ''}`} href="/">
-        <img className="logo" src="/logo.svg" alt="Apricot Crab logo" />
+        <span className="logo" aria-label="Apricot Crab logo" role="img">
+          <img className="logo-right" src="/crab_right.png" alt="" />
+          <img className="logo-left" src="/crab_left.png" alt="" />
+        </span>
         Home
       </a>
       <span className="divider" aria-hidden="true"></span>
