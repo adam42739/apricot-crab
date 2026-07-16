@@ -25,32 +25,51 @@
   column-gap: 0;
 }
 
-.board-section {
+/* A column pairs a header with its row of flap cells, the header left-aligned
+   above the cells. */
+.board-column {
   display: flex;
-  gap: var(--flap-gap);
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.6rem;
 }
 
-/* Pin each section to an explicit column so the centre stays in the middle
-   column even when the side sections are removed at narrow widths — otherwise
-   the lone centre section auto-places into the first column and drifts left. */
-.board-section-start {
+/* Pin each column to an explicit grid column so the centre stays in the middle
+   column even when the side columns are removed at narrow widths — otherwise
+   the lone centre column auto-places into the first column and drifts left. */
+.board-column-start {
   grid-column: 1;
   justify-self: start;
 }
 
-.board-section-center {
+.board-column-center {
   grid-column: 2;
   justify-self: center;
 }
 
-.board-section-end {
+.board-column-end {
   grid-column: 3;
   justify-self: end;
 }
 
 /* Collapsed out entirely when the window is too narrow for all three. */
-.board-section-hidden {
+.board-column-hidden {
   display: none;
+}
+
+.board-column-header {
+  font-family: var(--flap-font);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--flap-header);
+}
+
+/* The row of flap cells within a column. */
+.board-section {
+  display: flex;
+  gap: var(--flap-gap);
 }
 
 /* A single split-flap cell. */
@@ -103,7 +122,7 @@
   font-size: calc(var(--flap-h) * 0.62);
   font-weight: 700;
   text-align: center;
-  color: var(--secondary-font);
+  color: var(--flap-text);
   /* Avoid selecting/blurring during the rapid flips. */
   user-select: none;
 }
@@ -143,17 +162,18 @@
     calc(var(--flip-ms) / 2) both;
 }
 
-/* A little shading on the moving flaps sells the fold. */
+/* A shine sweeping across the moving flaps sells the fold — a light highlight
+   toward the seam, like glare off the glossy black cell. */
 .flap-fold-top::after,
 .flap-fold-bottom::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.12));
+  background: linear-gradient(rgba(255, 255, 255, 0), var(--flap-shine));
 }
 
 .flap-fold-bottom::after {
-  background: linear-gradient(rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0));
+  background: linear-gradient(var(--flap-shine), rgba(255, 255, 255, 0));
 }
 
 @keyframes flap-fold-top-out {

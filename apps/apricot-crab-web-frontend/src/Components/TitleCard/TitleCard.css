@@ -5,7 +5,7 @@
   width: 15rem;
   aspect-ratio: 5 / 7;
   /* Slight corner rounding */
-  border-radius: 1.25rem;
+  border-radius: 0rem;
   /* Thin border around the entire card for contrast */
   border: 0.0625rem solid rgba(var(--shadow-rgb), 0.15);
   /* Light black shadow below the card */

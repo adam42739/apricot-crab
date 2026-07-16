@@ -11,12 +11,21 @@
   /* Black tint used for borders and shadows (opacity set per use) */
   --shadow-rgb: 0, 0, 0;
 
-  /* Split-flap departure board: light cells, dark characters, on the white
-     hero panel. */
-  --flap-cell-bg: #ededed;
-  --flap-cell-bg-shade: #e0e0e0;
+  /* Split-flap departure board: dark cells, school-bus-yellow characters, on
+     the white hero panel. */
+  --flap-cell-bg: #2b2b2b;
+  --flap-cell-bg-shade: #171717;
   --flap-cell-shadow: rgba(0, 0, 0, 0.18);
-  --flap-seam: rgba(0, 0, 0, 0.22);
+  --flap-seam: rgba(0, 0, 0, 0.55);
+  --flap-text: #ffd800;
+  --flap-header: #3a3a3a;
+  /* Highlight that sweeps across a flap as it folds, reading as a shine off
+     the glossy black cell. */
+  --flap-shine: rgba(255, 255, 255, 0.22);
+
+  /* Hero panel the board sits on: a gray band bracketed by darker rules. */
+  --hero-background: #d1d1d1;
+  --hero-rule: #8a8a8a;
 
   /* Fonts */
   --main-font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,

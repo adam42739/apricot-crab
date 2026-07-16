@@ -46,7 +46,7 @@ function getTimeText() {
 
 function getDateText() {
   const now = new Date()
-  return `${pad(now.getDate())}/${pad(now.getMonth() + 1)}/${now.getFullYear()}`
+  return `${pad(now.getMonth() + 1)}/${pad(now.getDate())}/${now.getFullYear()}`
 }
 
 function getTitleText() {
@@ -164,7 +164,7 @@ function Flap({ target, spinToken, index, fixed }) {
  * One aligned section of the board (time / title / date). Owns its own flip
  * timer so each section animates independently.
  */
-function BoardSection({ getText, align, hidden }) {
+function BoardSection({ getText, align, hidden, header }) {
   const [spinToken, setSpinToken] = useState(0)
   const [text, setText] = useState(getText)
 
@@ -191,20 +191,23 @@ function BoardSection({ getText, align, hidden }) {
 
   return (
     <div
-      className={`board-section board-section-${align}${
-        hidden ? ' board-section-hidden' : ''
+      className={`board-column board-column-${align}${
+        hidden ? ' board-column-hidden' : ''
       }`}
       aria-hidden={hidden ? 'true' : undefined}
     >
-      {text.split('').map((char, i) => (
-        <Flap
-          key={i}
-          target={char}
-          spinToken={spinToken}
-          index={i}
-          fixed={FIXED_CHARS.has(char)}
-        />
-      ))}
+      <span className="board-column-header">{header}</span>
+      <div className="board-section">
+        {text.split('').map((char, i) => (
+          <Flap
+            key={i}
+            target={char}
+            spinToken={spinToken}
+            index={i}
+            fixed={FIXED_CHARS.has(char)}
+          />
+        ))}
+      </div>
     </div>
   )
 }
@@ -244,9 +247,24 @@ function SplitFlapBoard() {
       }}
       aria-label="Apricot Crab"
     >
-      <BoardSection getText={getTimeText} align="start" hidden={compact} />
-      <BoardSection getText={getTitleText} align="center" hidden={false} />
-      <BoardSection getText={getDateText} align="end" hidden={compact} />
+      <BoardSection
+        getText={getTimeText}
+        align="start"
+        hidden={compact}
+        header="Time"
+      />
+      <BoardSection
+        getText={getTitleText}
+        align="center"
+        hidden={false}
+        header="Destination"
+      />
+      <BoardSection
+        getText={getDateText}
+        align="end"
+        hidden={compact}
+        header="Date"
+      />
     </div>
   )
 }

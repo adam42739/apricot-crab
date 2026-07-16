@@ -20,6 +20,8 @@ body {
   display: flex;
   flex-direction: column;
   background-color: var(--page-background);
+  /* Reserve room for the fixed nav banner floating above the content. */
+  padding-top: var(--banner-height);
 }
 
 .content {

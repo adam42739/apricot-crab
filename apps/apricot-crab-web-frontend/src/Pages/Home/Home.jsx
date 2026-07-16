@@ -56,7 +56,10 @@ function Home() {
     <div className="page">
       <NavBanner />
       <section className="home-hero">
-        <SplitFlapBoard />
+        <div className="home-hero-board">
+          <SplitFlapBoard />
+        </div>
+        <div className="home-hero-rule" />
       </section>
       <main className="content">
         <div className="title-card-grid" ref={gridRef}>

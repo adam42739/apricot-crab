@@ -1,14 +1,30 @@
+:root {
+  /* Height the banner occupies; used to reserve space on the page so the
+     fixed banner doesn't overlap the content beneath it at the top. */
+  --banner-height: 4.8rem;
+}
+
 .banner {
   display: flex;
   align-items: center;
+  height: var(--banner-height);
   padding: 0.85rem 2.25rem;
   background-color: var(--main-accent);
   width: 100%;
   box-shadow: 0 0.125rem 0.25rem rgba(var(--shadow-rgb), 0.3);
-  /* Lift the banner above the following hero section so its shadow is
-     painted on top of the white title band rather than hidden beneath it. */
-  position: relative;
-  z-index: 1;
+  /* Float at the top of the viewport above every other component, keeping the
+     overhang shadow so it reads as lifted over the content below. */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 9999;
+  transition: transform 0.3s ease;
+}
+
+/* Slid out of view when the cursor has been away from the top while scrolled. */
+.banner.hidden {
+  transform: translateY(-100%);
 }
 
 .brand {
