@@ -11,8 +11,8 @@ body,
 }
 
 body {
-  font-family: var(--font-body);
-  background-color: #000000; /* black */
+  font-family: var(--main-font-body);
+  background-color: var(--body-background);
 }
 
 .page {

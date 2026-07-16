@@ -1,0 +1,70 @@
+.title-card {
+  display: flex;
+  flex-direction: column;
+  /* Trading-card aspect ratio: taller than it is wide */
+  width: 15rem;
+  aspect-ratio: 5 / 7;
+  /* Slight corner rounding */
+  border-radius: 1.25rem;
+  /* Thin border around the entire card for contrast */
+  border: 0.0625rem solid rgba(var(--shadow-rgb), 0.15);
+  /* Light black shadow below the card */
+  box-shadow: 0 0.375rem 0.75rem rgba(var(--shadow-rgb), 0.25);
+  background-color: var(--card-background);
+  overflow: hidden;
+  text-decoration: none;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.title-card:hover {
+  transform: translateY(-0.1875rem);
+  box-shadow: 0 0.625rem 1.125rem rgba(var(--shadow-rgb), 0.3);
+}
+
+/* Top quarter of the card: accent-color title banner */
+.title-card-banner {
+  flex: 0 0 25%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1rem;
+  background-color: var(--main-accent);
+}
+
+.title-card-title {
+  font-family: var(--main-font-brand);
+  font-size: 1.25rem;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  text-align: center;
+  color: var(--main-font);
+}
+
+/* Bottom of the card: quick description or picture */
+.title-card-body {
+  flex: 1 1 auto;
+}
+
+/* Image fills the body area; cropped to the body's aspect ratio */
+.title-card-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Placeholder card: fully gray, "Coming soon..." */
+.title-card-placeholder {
+  align-items: center;
+  justify-content: center;
+  background-color: var(--disabled-gray);
+  cursor: default;
+}
+
+.title-card-placeholder-text {
+  font-family: var(--main-font-brand);
+  font-size: 1.1rem;
+  font-weight: 300;
+  letter-spacing: 0.01em;
+  color: var(--secondary-font);
+}

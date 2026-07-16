@@ -1,0 +1,33 @@
+/* Hero band between the nav banner and the card grid: a light panel that
+   frames the site name and sets it apart from the cream page background. */
+.home-hero {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 2rem;
+  background-color: var(--card-background);
+}
+
+.home-hero-title {
+  margin: 0;
+  font-family: var(--main-font-brand);
+  font-size: 5rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  text-align: center;
+  color: var(--secondary-font);
+}
+
+.title-card-grid {
+  /* Cards flow left-to-right then top-to-bottom, each row centered so
+     leftover horizontal space is split evenly on both sides rather than
+     piling up on the right. */
+  width: 100%;
+  align-self: flex-start;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  justify-content: center;
+  align-content: flex-start;
+  padding: 2rem;
+}

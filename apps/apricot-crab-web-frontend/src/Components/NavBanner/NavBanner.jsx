@@ -12,13 +12,6 @@ function NavBanner() {
         </span>
         Home
       </a>
-      <span className="divider" aria-hidden="true"></span>
-      <a
-        className={`brand${path === '/aviation' ? ' active' : ''}`}
-        href="/aviation"
-      >
-        Aviation
-      </a>
     </nav>
   )
 }
