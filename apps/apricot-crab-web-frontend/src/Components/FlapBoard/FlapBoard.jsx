@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import './SplitFlapBoard.css'
+import './FlapBoard.css'
 
 // One flip step (a single fold) lasts this long; the CSS animation duration is
 // driven by the --flip-ms variable set on the root, so keep them in sync.
@@ -7,18 +7,9 @@ const FLIP_MS = 140
 // Cells shuffle for a burst of this many flips before settling on their value.
 const MIN_FLIPS = 6
 const MAX_FLIPS = 14
-// Cells within a section start their burst slightly after their neighbour, so
-// the flips ripple left-to-right instead of all firing at once.
+// Cells within a board start their burst slightly after their neighbour, so the
+// flips ripple left-to-right instead of all firing at once.
 const CELL_STAGGER_MS = 55
-// Each section re-flips on its own timer somewhere in this window.
-const SPIN_MIN_MS = 5000
-const SPIN_MAX_MS = 8000
-
-// Cell geometry. These mirror the CSS custom properties on .split-flap-board
-// and are used to work out whether all three sections fit; keep them in sync.
-const FLAP_W_REM = 2.4
-const FLAP_GAP_REM = 0.15
-const SECTION_GAP_REM = 2.5
 
 const SHUFFLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789'
 
@@ -33,37 +24,6 @@ function randomShuffleChar() {
   return SHUFFLE_CHARS[Math.floor(Math.random() * SHUFFLE_CHARS.length)]
 }
 
-function pad(value) {
-  return String(value).padStart(2, '0')
-}
-
-// Section value sources — module-level so their identity is stable and they can
-// be read fresh (in the user's local time zone) each time a section flips.
-function getTimeText() {
-  const now = new Date()
-  return `${pad(now.getHours())}:${pad(now.getMinutes())}`
-}
-
-function getDateText() {
-  const now = new Date()
-  return `${pad(now.getMonth() + 1)}/${pad(now.getDate())}/${now.getFullYear()}`
-}
-
-function getTitleText() {
-  return 'APRICOT CRAB'
-}
-
-function sectionWidthRem(cellCount) {
-  return cellCount * FLAP_W_REM + (cellCount - 1) * FLAP_GAP_REM
-}
-
-// Width needed to show all three sections plus the gaps between them.
-const REQUIRED_REM =
-  sectionWidthRem(5) +
-  sectionWidthRem(12) +
-  sectionWidthRem(10) +
-  2 * SECTION_GAP_REM
-
 /**
  * A single split-flap character cell. At rest it shows `target` across both
  * halves. When `spinToken` changes it runs a burst of fold animations through
@@ -75,7 +35,8 @@ function Flap({ target, spinToken, index, fixed }) {
   const [flipTo, setFlipTo] = useState(null)
   const timersRef = useRef([])
 
-  // Separators/blanks never animate, but should still track their value.
+  // Separators/blanks (and non-flapping cells) never animate, but should still
+  // track their value.
   useEffect(() => {
     if (fixed) setCurrent(target)
   }, [fixed, target])
@@ -117,7 +78,7 @@ function Flap({ target, spinToken, index, fixed }) {
       timers.push(commit)
     }
 
-    // Stagger the start so the section ripples left-to-right.
+    // Stagger the start so the board ripples left-to-right.
     const start = setTimeout(runStep, index * CELL_STAGGER_MS)
     timers.push(start)
 
@@ -161,22 +122,40 @@ function Flap({ target, spinToken, index, fixed }) {
 }
 
 /**
- * One aligned section of the board (time / title / date). Owns its own flip
- * timer so each section animates independently.
+ * A single split-flap board section: one row of cells spelling `word`. The
+ * board re-flaps on its own timer — on each spin every flapping cell bursts
+ * together, rippling left-to-right — and, because the word is fixed, each cell
+ * shuffles through random glyphs and settles back on its own letter.
+ *
+ * Props:
+ *   word          the text to display.
+ *   flapIndices   char indices allowed to flap; omit to flap every non-separator
+ *                 letter. Separators (: / space) never flap regardless.
+ *   spinMinMs     the next ripple fires at a random time in this window.
+ *   spinMaxMs
+ *   cellWidthRem  cell geometry, surfaced as CSS custom properties.
+ *   cellHeightRem
+ *   ariaLabel     accessible label; defaults to `word`.
  */
-function BoardSection({ getText, align, hidden, header }) {
+function FlapBoard({
+  word,
+  flapIndices,
+  spinMinMs = 5000,
+  spinMaxMs = 8000,
+  cellWidthRem = 1.15,
+  cellHeightRem = 1.6,
+  ariaLabel,
+}) {
   const [spinToken, setSpinToken] = useState(0)
-  const [text, setText] = useState(getText)
 
   useEffect(() => {
     let cancelled = false
     let timer
 
     const schedule = () => {
-      const delay = SPIN_MIN_MS + Math.random() * (SPIN_MAX_MS - SPIN_MIN_MS)
+      const delay = spinMinMs + Math.random() * (spinMaxMs - spinMinMs)
       timer = setTimeout(() => {
         if (cancelled) return
-        setText(getText()) // pick up the current time/date before flipping
         setSpinToken((token) => token + 1)
         schedule()
       }, delay)
@@ -187,86 +166,31 @@ function BoardSection({ getText, align, hidden, header }) {
       cancelled = true
       clearTimeout(timer)
     }
-  }, [getText])
+  }, [spinMinMs, spinMaxMs])
 
   return (
     <div
-      className={`board-column board-column-${align}${
-        hidden ? ' board-column-hidden' : ''
-      }`}
-      aria-hidden={hidden ? 'true' : undefined}
-    >
-      <span className="board-column-header">{header}</span>
-      <div className="board-section">
-        {text.split('').map((char, i) => (
-          <Flap
-            key={i}
-            target={char}
-            spinToken={spinToken}
-            index={i}
-            fixed={FIXED_CHARS.has(char)}
-          />
-        ))}
-      </div>
-    </div>
-  )
-}
-
-/**
- * Airport-style split-flap board used as the Home hero. Three sections: local
- * time (left), the site name (centre), and today's date (right). When the
- * window is too narrow for all three, only the centre section is shown.
- */
-function SplitFlapBoard() {
-  const rootRef = useRef(null)
-  const [compact, setCompact] = useState(false)
-
-  useEffect(() => {
-    const el = rootRef.current
-    if (!el) return
-
-    const check = () => {
-      const rootFontSize = parseFloat(
-        getComputedStyle(document.documentElement).fontSize,
-      )
-      setCompact(el.clientWidth < REQUIRED_REM * rootFontSize)
-    }
-
-    check()
-    const observer = new ResizeObserver(check)
-    observer.observe(el)
-    return () => observer.disconnect()
-  }, [])
-
-  return (
-    <div
-      className={`split-flap-board${compact ? ' split-flap-board-compact' : ''}`}
-      ref={rootRef}
+      className="flap-board"
       style={{
+        '--flap-w': `${cellWidthRem}rem`,
+        '--flap-h': `${cellHeightRem}rem`,
         '--flip-ms': `${FLIP_MS}ms`,
       }}
-      aria-label="Apricot Crab"
+      aria-label={ariaLabel ?? word}
     >
-      <BoardSection
-        getText={getTimeText}
-        align="start"
-        hidden={compact}
-        header="Time"
-      />
-      <BoardSection
-        getText={getTitleText}
-        align="center"
-        hidden={false}
-        header="Destination"
-      />
-      <BoardSection
-        getText={getDateText}
-        align="end"
-        hidden={compact}
-        header="Date"
-      />
+      {word.split('').map((char, i) => (
+        <Flap
+          key={i}
+          target={char}
+          spinToken={spinToken}
+          index={i}
+          fixed={
+            FIXED_CHARS.has(char) || (flapIndices && !flapIndices.includes(i))
+          }
+        />
+      ))}
     </div>
   )
 }
 
-export default SplitFlapBoard
+export default FlapBoard

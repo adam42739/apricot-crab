@@ -1,26 +1,3 @@
-/* Hero band between the nav banner and the card grid: a light panel that
-   frames the site name and sets it apart from the cream page background. */
-.home-hero {
-  display: flex;
-  flex-direction: column;
-  align-items: stretch;
-  background-color: var(--hero-background);
-}
-
-/* Thin full-page-width rules above and below the board that frame the panel
-   and give the gray band definition. */
-.home-hero-rule {
-  height: 0.125rem;
-  background-color: var(--hero-rule);
-}
-
-/* Padding lives here (not on .home-hero) so the rules still span edge to edge. */
-.home-hero-board {
-  display: flex;
-  justify-content: center;
-  padding: 2.5rem 2rem;
-}
-
 .title-card-grid {
   /* Cards flow left-to-right then top-to-bottom, each row centered so
      leftover horizontal space is split evenly on both sides rather than

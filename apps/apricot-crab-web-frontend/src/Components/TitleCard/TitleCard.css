@@ -40,6 +40,14 @@
   color: var(--main-font);
 }
 
+/* Split-flap title: stacked rows of flap cells, centered within the banner. */
+.title-card-flap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
 /* Bottom of the card: quick description or picture */
 .title-card-body {
   flex: 1 1 auto;

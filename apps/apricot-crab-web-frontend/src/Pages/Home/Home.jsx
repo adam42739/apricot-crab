@@ -1,6 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import NavBanner from '../../Components/NavBanner/NavBanner'
-import SplitFlapBoard from '../../Components/SplitFlapBoard/SplitFlapBoard'
 import TitleCard from '../../Components/TitleCard/TitleCard'
 import { titleCards } from '../../titleCards'
 import './Home.css'
@@ -55,16 +54,16 @@ function Home() {
   return (
     <div className="page">
       <NavBanner />
-      <section className="home-hero">
-        <div className="home-hero-board">
-          <SplitFlapBoard />
-        </div>
-        <div className="home-hero-rule" />
-      </section>
       <main className="content">
         <div className="title-card-grid" ref={gridRef}>
           {titleCards.map((card) => (
-            <TitleCard key={card.path} title={card.title} path={card.path} image={card.image} />
+            <TitleCard
+              key={card.path}
+              title={card.title}
+              path={card.path}
+              image={card.image}
+              flap={card.flap}
+            />
           ))}
           {Array.from({ length: placeholderCount }).map((_, i) => (
             <TitleCard key={`placeholder-${i}`} placeholder />

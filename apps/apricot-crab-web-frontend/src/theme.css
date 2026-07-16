@@ -23,10 +23,6 @@
      the glossy black cell. */
   --flap-shine: rgba(255, 255, 255, 0.22);
 
-  /* Hero panel the board sits on: a gray band bracketed by darker rules. */
-  --hero-background: #d1d1d1;
-  --hero-rule: #8a8a8a;
-
   /* Fonts */
   --main-font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     Helvetica, Arial, sans-serif;

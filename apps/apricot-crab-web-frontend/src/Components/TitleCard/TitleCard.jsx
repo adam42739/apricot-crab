@@ -1,6 +1,7 @@
+import FlapBoard from '../FlapBoard/FlapBoard'
 import './TitleCard.css'
 
-function TitleCard({ title, path, image, placeholder }) {
+function TitleCard({ title, path, image, placeholder, flap }) {
   if (placeholder) {
     return (
       <div className="title-card title-card-placeholder">
@@ -12,7 +13,15 @@ function TitleCard({ title, path, image, placeholder }) {
   return (
     <a className="title-card" href={path}>
       <div className="title-card-banner">
-        <span className="title-card-title">{title}</span>
+        {flap ? (
+          <div className="title-card-flap">
+            {flap.map((line, i) => (
+              <FlapBoard key={i} {...line} />
+            ))}
+          </div>
+        ) : (
+          <span className="title-card-title">{title}</span>
+        )}
       </div>
       <div className="title-card-body">
         {image && (
