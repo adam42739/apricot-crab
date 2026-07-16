@@ -11,9 +11,17 @@
   /* Black tint used for borders and shadows (opacity set per use) */
   --shadow-rgb: 0, 0, 0;
 
+  /* Split-flap departure board: light cells, dark characters, on the white
+     hero panel. */
+  --flap-cell-bg: #ededed;
+  --flap-cell-bg-shade: #e0e0e0;
+  --flap-cell-shadow: rgba(0, 0, 0, 0.18);
+  --flap-seam: rgba(0, 0, 0, 0.22);
+
   /* Fonts */
   --main-font-body: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
     Helvetica, Arial, sans-serif;
   --main-font-brand: 'Epilogue', 'Avenir Next', 'Montserrat', 'Segoe UI',
     Helvetica, Arial, sans-serif;
+  --flap-font: Arial, 'Helvetica Neue', Helvetica, sans-serif;
 }

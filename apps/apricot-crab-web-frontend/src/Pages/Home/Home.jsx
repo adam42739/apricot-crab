@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react'
 import NavBanner from '../../Components/NavBanner/NavBanner'
+import SplitFlapBoard from '../../Components/SplitFlapBoard/SplitFlapBoard'
 import TitleCard from '../../Components/TitleCard/TitleCard'
 import { titleCards } from '../../titleCards'
 import './Home.css'
@@ -55,7 +56,7 @@ function Home() {
     <div className="page">
       <NavBanner />
       <section className="home-hero">
-        <h1 className="home-hero-title">Apricot Crab</h1>
+        <SplitFlapBoard />
       </section>
       <main className="content">
         <div className="title-card-grid" ref={gridRef}>

@@ -1,0 +1,182 @@
+/* Airport departure-board title. Three sections laid out left / centre / right
+   on the white hero panel; each character is a split-flap cell that folds
+   through random glyphs before settling. Cell geometry here mirrors the
+   *_REM constants in SplitFlapBoard.jsx — keep them in sync. */
+.split-flap-board {
+  --flap-w: 2.4rem;
+  --flap-h: 3.4rem;
+  --flap-gap: 0.15rem;
+  --flap-radius: 0.25rem;
+  --section-gap: 2.5rem;
+
+  display: grid;
+  /* Equal side columns keep the centre section centred whether or not the
+     side sections are shown. */
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: var(--section-gap);
+  width: 100%;
+}
+
+/* When only the title shows, drop the inter-column gap so the two empty side
+   columns stay symmetric and the title sits dead centre (the gap would
+   otherwise eat space unevenly once the side columns clamp to zero). */
+.split-flap-board-compact {
+  column-gap: 0;
+}
+
+.board-section {
+  display: flex;
+  gap: var(--flap-gap);
+}
+
+/* Pin each section to an explicit column so the centre stays in the middle
+   column even when the side sections are removed at narrow widths — otherwise
+   the lone centre section auto-places into the first column and drifts left. */
+.board-section-start {
+  grid-column: 1;
+  justify-self: start;
+}
+
+.board-section-center {
+  grid-column: 2;
+  justify-self: center;
+}
+
+.board-section-end {
+  grid-column: 3;
+  justify-self: end;
+}
+
+/* Collapsed out entirely when the window is too narrow for all three. */
+.board-section-hidden {
+  display: none;
+}
+
+/* A single split-flap cell. */
+.flap {
+  position: relative;
+  width: var(--flap-w);
+  height: var(--flap-h);
+  /* Background shows through the seam gap between the two halves. */
+  background: var(--flap-seam);
+  border-radius: var(--flap-radius);
+  box-shadow: 0 0.06rem 0.15rem var(--flap-cell-shadow);
+  /* Perspective gives the folds their 3D depth. */
+  perspective: 16rem;
+}
+
+/* Top and bottom faces of the cell. */
+.flap-half {
+  position: absolute;
+  left: 0;
+  right: 0;
+  /* Leave a hairline gap at the seam so the divider line shows through. */
+  height: calc(50% - 0.03rem);
+  overflow: hidden;
+  background: var(--flap-cell-bg);
+}
+
+.flap-half-top {
+  top: 0;
+  border-radius: var(--flap-radius) var(--flap-radius) 0 0;
+  /* Subtle top-lit shading. */
+  background: linear-gradient(var(--flap-cell-bg), var(--flap-cell-bg-shade));
+}
+
+.flap-half-bottom {
+  bottom: 0;
+  border-radius: 0 0 var(--flap-radius) var(--flap-radius);
+  background: linear-gradient(var(--flap-cell-bg-shade), var(--flap-cell-bg));
+}
+
+/* The glyph is drawn at full cell height inside each half and clipped, so the
+   top half shows the upper portion of the character and the bottom half the
+   lower portion — meeting exactly at the seam. */
+.flap-char {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: var(--flap-h);
+  line-height: var(--flap-h);
+  font-family: var(--flap-font);
+  font-size: calc(var(--flap-h) * 0.62);
+  font-weight: 700;
+  text-align: center;
+  color: var(--secondary-font);
+  /* Avoid selecting/blurring during the rapid flips. */
+  user-select: none;
+}
+
+.flap-half-top .flap-char {
+  top: 0;
+}
+
+.flap-half-bottom .flap-char {
+  bottom: 0;
+}
+
+.flap-blank {
+  box-shadow: none;
+}
+
+/* Folding flaps sit above the static faces. */
+.flap-fold-top,
+.flap-fold-bottom {
+  z-index: 2;
+  backface-visibility: hidden;
+}
+
+/* Top flap: shows the outgoing character and folds down and away, hinged at
+   the seam, revealing the incoming character behind it. */
+.flap-fold-top {
+  transform-origin: bottom center;
+  animation: flap-fold-top-out calc(var(--flip-ms) / 2) ease-in both;
+}
+
+/* Bottom flap: the incoming character drops in from the seam during the second
+   half of the flip, covering the outgoing bottom face. `both` fill keeps it
+   hidden (edge-on) during the delay. */
+.flap-fold-bottom {
+  transform-origin: top center;
+  animation: flap-fold-bottom-in calc(var(--flip-ms) / 2) ease-out
+    calc(var(--flip-ms) / 2) both;
+}
+
+/* A little shading on the moving flaps sells the fold. */
+.flap-fold-top::after,
+.flap-fold-bottom::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.12));
+}
+
+.flap-fold-bottom::after {
+  background: linear-gradient(rgba(0, 0, 0, 0.12), rgba(0, 0, 0, 0));
+}
+
+@keyframes flap-fold-top-out {
+  from {
+    transform: rotateX(0deg);
+  }
+  to {
+    transform: rotateX(-90deg);
+  }
+}
+
+@keyframes flap-fold-bottom-in {
+  from {
+    transform: rotateX(90deg);
+  }
+  to {
+    transform: rotateX(0deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .flap-fold-top,
+  .flap-fold-bottom {
+    animation: none;
+  }
+}
