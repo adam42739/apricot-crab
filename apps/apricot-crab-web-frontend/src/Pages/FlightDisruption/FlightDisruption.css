@@ -1,0 +1,67 @@
+.flight-disruption {
+  /* Left-aligned column of page content sitting below the nav banner. */
+  width: 100%;
+  padding: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.flight-disruption-title {
+  font-family: var(--main-font-brand);
+  font-size: 2.25rem;
+  font-weight: 400;
+  color: var(--secondary-font);
+}
+
+.flight-disruption-search {
+  /* Thin gray outlined box, full page width, hard edges. */
+  width: 100%;
+  border: 0.0625rem solid var(--border-gray);
+  border-radius: 0;
+  padding: 1.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 1.5rem;
+}
+
+.flight-disruption-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  flex: 1 1 12rem;
+}
+
+.flight-disruption-field label {
+  font-family: var(--main-font-body);
+  font-size: 0.9rem;
+  color: var(--secondary-font);
+}
+
+.flight-disruption-field input {
+  font-family: var(--main-font-body);
+  font-size: 1rem;
+  color: var(--secondary-font);
+  background-color: var(--card-background);
+  border: 0.0625rem solid var(--border-gray);
+  border-radius: 0;
+  padding: 0.6rem 0.75rem;
+}
+
+.flight-disruption-field input:focus {
+  outline: none;
+  border-color: var(--main-accent);
+}
+
+.flight-disruption-search button {
+  font-family: var(--main-font-body);
+  font-size: 1rem;
+  color: var(--main-font);
+  background-color: var(--main-accent);
+  border: none;
+  border-radius: 0;
+  padding: 0.6rem 1.5rem;
+  cursor: pointer;
+}

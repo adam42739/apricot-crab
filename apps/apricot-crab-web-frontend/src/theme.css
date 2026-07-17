@@ -2,11 +2,13 @@
   /* Colors */
   --main-accent: #1b7a8e;
   --main-font: #f6f1ea;
+  --main-white: #ffffff;
   --secondary-font: #1a1a1a;
   --page-background: #f6f1ea;
   --body-background: var(--page-background);
   --card-background: #ffffff;
   --disabled-gray: #dedede;
+  --border-gray: #c9c9c9;
 
   /* Black tint used for borders and shadows (opacity set per use) */
   --shadow-rgb: 0, 0, 0;
@@ -17,7 +19,7 @@
   --flap-cell-bg-shade: #171717;
   --flap-cell-shadow: rgba(0, 0, 0, 0.18);
   --flap-seam: rgba(0, 0, 0, 0.55);
-  --flap-text: #ffd800;
+  --flap-text: var(--main-font);
   --flap-header: #3a3a3a;
   /* Highlight that sweeps across a flap as it folds, reading as a shine off
      the glossy black cell. */
